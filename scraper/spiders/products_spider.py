@@ -18,7 +18,9 @@ class ProductsSpider(scrapy.Spider):
     def parse_section(self, response):
         # Process the page of products
         for product_url in response.xpath('//div/h2/a/@href'):
-            yield {'url': product_url.extract()}
+            url = product_url.extract()
+            # Possibly will require more robust (regex based) validation
+            yield {'url': url, 'valid': (url.endswith('/') and url.count('/') == 4)}
 
         # Notify scrapy to process next page
         next_page = response.css('a.next::attr(href)').extract_first()
