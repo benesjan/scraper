@@ -11,6 +11,16 @@ class ProductsSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        # yield response.xpath('//li/h2/a/@href').extract()
+        # Select main sections from from start_urls
         for url in response.xpath('//li/h2/a/@href'):
-            yield {'url': url.extract()}
+            yield response.follow(url.extract(), callback=self.parse_section)
+
+    def parse_section(self, response):
+        # Process the page of products
+        for product_url in response.xpath('//div/h2/a/@href'):
+            yield {'url': product_url.extract()}
+
+        # Notify scrapy to process next page
+        next_page = response.css('a.next::attr(href)').extract_first()
+        if next_page is not None:
+            yield response.follow(next_page, callback=self.parse_section)
