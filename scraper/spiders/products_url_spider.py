@@ -1,8 +1,8 @@
 import scrapy
 
 
-class ProductsSpider(scrapy.Spider):
-    name = "products"
+class ProductUrlsSpider(scrapy.Spider):
+    name = "product_urls"
     start_urls = [
         'https://telekomunikace.heureka.cz/',
         'https://tv-video.heureka.cz/',
