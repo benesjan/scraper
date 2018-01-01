@@ -24,7 +24,7 @@ class ProductDataSpider(scrapy.Spider):
         request = scrapy.Request(url=request_url, callback=self.parse_prices)
         request.meta['product_id'] = data['product_id']
         request.meta['product_name'] = data['product_name']
-        request.meta['product_brand'] = data['product_brand']
+        request.meta['product_brand'] = data['product_brand'] if 'product_brand' in data else 'no_brand'
         request.meta['product_url'] = response.url
 
         return request
